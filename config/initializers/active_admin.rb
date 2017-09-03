@@ -1,7 +1,7 @@
 class CustomFooter < ActiveAdmin::Component
   def build _arg
     super(id: "footer")
-    para "Powered by Platanus"
+    para ""
   end
 end
 
@@ -13,7 +13,7 @@ ActiveAdmin.setup do |config|
   # Set the title that is displayed on the main layout
   # for each of the active admin pages.
   #
-  config.site_title = "Achiever"
+  config.site_title = "CHC - Sistema de Objetivos"
 
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.
@@ -39,7 +39,7 @@ ActiveAdmin.setup do |config|
   # will namespace routes to /hello_world/*
   #
   # To set no namespace by default, use:
-  #   config.default_namespace = false
+  config.default_namespace = false
   #
   # Default:
   # config.default_namespace = :admin
@@ -121,14 +121,14 @@ ActiveAdmin.setup do |config|
   # roots for each namespace.
   #
   # Default:
-  # config.root_to = 'dashboard#index'
+  config.root_to = 'objectives#index'
 
   # == Admin Comments
   #
   # This allows your users to comment on any resource registered with Active Admin.
   #
   # You can completely disable comments:
-  # config.comments = false
+  config.comments = false
   #
   # You can change the name under which comments are registered:
   # config.comments_registration_name = 'AdminComment'
@@ -276,7 +276,7 @@ ActiveAdmin.setup do |config|
   # By default, the footer shows the current Active Admin version. You can
   # override the content of the footer here.
   #
-  # config.footer = 'my custom footer text'
+  config.footer = '© CHC 2017'
 
   # == Sorting
   #

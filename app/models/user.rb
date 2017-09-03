@@ -3,6 +3,9 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, 
          :recoverable, :rememberable, :trackable, :validatable
+  has_many :objectives
+
+  enumerize :role, in: [:sysadmin, :manager, :worker]
 end
 
 # == Schema Information
@@ -25,6 +28,6 @@ end
 #
 # Indexes
 #
-#  index_admin_users_on_email                 (email) UNIQUE
-#  index_admin_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
