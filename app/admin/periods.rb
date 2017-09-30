@@ -13,6 +13,7 @@ ActiveAdmin.register Period do
         link_to "Definir como actual", set_as_current_period_path(period), method: :post
       end
     end
+    actions
   end
 
   member_action :set_as_current, method: :post do
