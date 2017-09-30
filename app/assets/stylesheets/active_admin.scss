@@ -25,3 +25,13 @@ $skinLogo: $chcBlack image-url("logo.jpg") no-repeat 27px/100px;
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+.achieved_true {
+  color: green;
+  font-weight: bold;
+}
+
+.achieved_false {
+  color: darkred;
+  font-weight: bold;
+}

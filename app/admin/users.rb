@@ -8,8 +8,9 @@ ActiveAdmin.register User do
     id_column
     column :email
     column :name
-    column :current_sign_in_at
-    column :sign_in_count
+    column :role
+    column :current_sign_in_at if current_user.role.sysadmin?
+    column :sign_in_count  if current_user.role.sysadmin?
     actions
   end
 
@@ -22,8 +23,8 @@ ActiveAdmin.register User do
     f.inputs do
       f.input :email
       f.input :name
-      f.input :password if resource == current_user
-      f.input :password_confirmation if resource == current_user
+      f.input :password if resource.new_record? || resource == current_user
+      f.input :password_confirmation if resource.new_record? || resource == current_user
       f.input :role
     end
     f.actions

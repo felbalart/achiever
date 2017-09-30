@@ -8,6 +8,13 @@ class Objective < ApplicationRecord
   attr_accessor :obj4
   attr_accessor :obj5
   attr_accessor :obj6
+
+  validates_presence_of :text
+
+  scope :from_period_state, ->(state) { joins(:period).where("periods.state = '#{state}'") }
+  scope :from_open_period, -> { from_period_state(:open) }
+  scope :from_closed_period, -> { from_period_state(:closed) }
+  scope :from_evaluation_period, -> { from_period_state(:evaluation) }
 end
 
 # == Schema Information

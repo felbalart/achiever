@@ -1,2 +1,54 @@
 es-CL:
-  hello: "Hola mundo"
+  activerecord:
+    models:
+      objective:
+        one: Objetivo
+        other: Objetivos
+      period:
+        one: Periodo
+        other: Periodos
+      user:
+        one: Usuario
+        other: Usuarios
+    attributes:
+      objective:
+        user_id: ID usuario
+        period_id: ID período
+        period: Periodo
+        text: Texto
+        achieved: Cumplido
+        created_at: Fecha creación
+        updated_at: Fecha actualización
+      period:
+        name: Nombre
+        current: Actual
+        state: Estado
+        state_text: Estado
+        created_at: Fecha creación
+        updated_at: Fecha actualización
+      user:
+        email: Email
+        encrypted_password: Clave encriptada
+        reset_password_token: Resetear token de clave
+        reset_password_sent_at: Fecha resetear clave enviada en
+        remember_created_at: Fecha creación
+        sign_in_count: Cuenta de sign-in
+        current_sign_in_at: Fecha sign-in actual
+        last_sign_in_at: Fecha último sign-in
+        current_sign_in_ip: IP sign-in actual
+        last_sign_in_ip: IP último sign-in
+        created_at: Fecha creado en
+        updated_at: Fecha última actualización
+        name: Nombre
+        role: Rol
+  enumerize:
+    user:
+      role:
+        sysadmin: SysAdmin
+        manager: Jefe
+        worker: Colaborador
+    period:
+      state:
+        open: Abierto
+        evaluation: Evaluación
+        closed: Cerrado
