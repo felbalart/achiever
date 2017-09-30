@@ -1,6 +1,13 @@
 class Objective < ApplicationRecord
   belongs_to :user
   belongs_to :period
+
+  attr_accessor :obj1
+  attr_accessor :obj2
+  attr_accessor :obj3
+  attr_accessor :obj4
+  attr_accessor :obj5
+  attr_accessor :obj6
 end
 
 # == Schema Information
