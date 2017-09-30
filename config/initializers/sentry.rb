@@ -1,6 +1,7 @@
 if Rails.env.production?
   Raven.configure do |config|
     config.sanitize_fields = Rails.application.config.filter_parameters.map(&:to_s)
+    # config.tags = { environment: Heroku.stage }
   end
 
   # In case you want to group the events with different ids in the
