@@ -21,4 +21,8 @@ module Achiever
     config.assets.paths << Rails.root.join('node_modules')
     config.load_defaults 5.1
   end
+
+  Raven.configure do |config|
+    config.dsn = ENV['SENTRY_DSN']
+  end
 end

@@ -7,6 +7,10 @@ class User < ApplicationRecord
   has_many :objectives
 
   enumerize :role, in: [:sysadmin, :manager, :worker]
+
+  def to_s
+    name || email
+  end
 end
 
 # == Schema Information

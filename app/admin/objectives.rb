@@ -1,5 +1,8 @@
 ActiveAdmin.register Objective do
-permit_params :text, :achieved
+permit_params :text, :achieved, :user_id, :period_id,
+  :obj1, :obj2, :obj3, :obj4, :obj5, :obj6
+
+  actions :all, except: [:show]
 
   form do |f|
     f.inputs do
@@ -16,8 +19,10 @@ permit_params :text, :achieved
       objs = params[:objective].values.reject(&:blank?)
       if objs.count < 3
         flash[:error] = 'Debe ingresar por lo menos 3 objetivos'
-        binding.pry
-        #.errors.add(:base, 'Debe ingresar por lo menos 3 objetivos')
+      else
+        params[:objective][:user_id] = current_user.id
+        params[:objective][:period_id] = Period.current.id
+        objs.each { |obj| Objective.create!(user: current_user, period: Period.current, text: obj) }
       end
       super
     end
