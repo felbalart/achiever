@@ -4,11 +4,38 @@ permit_params :text, :achieved, :user_id, :period_id,
 
   actions :all, except: [:show]
 
-  scope 'Periodo Abierto', :from_open_period, default: true
-  scope 'Periodo Evaluación', :from_evaluation_period
-  scope 'Todas', :all
+  filter :user, if: proc { current_user.role.sysadmin? }
+  filter :period
+  filter :text
+  filter :achieved
+  filter :created_at
+  filter :updated_at
+
+
+  scope 'Periodo Abierto', default: true do |objs|
+    if current_user.role.sysadmin?
+      objs.from_period_state(:open)
+    else
+      objs.where(user: current_user).from_period_state(:open)
+    end
+  end
+  scope 'Periodo Evaluación' do |objs|
+    if current_user.role.sysadmin?
+      objs.from_period_state(:evaluation)
+    else
+      objs.where(user: current_user).from_period_state(:evaluation)
+    end
+  end
+  scope 'Todas' do |objs|
+    if current_user.role.sysadmin?
+      objs
+    else
+      objs.where(user: current_user)
+    end
+  end
 
   index do
+    column('Usuario') { |obj| obj.user.name } if current_user.role.sysadmin?
     column :period
     column('Estado Periodo') { |obj| obj.period.state_text }
     column :text

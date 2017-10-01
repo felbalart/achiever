@@ -1,6 +1,17 @@
 class ObjectivePolicy < ApplicationPolicy
+  class Scope < Scope
+    def resolve
+      if user.role.sysadmin?
+        scope.all
+      else
+        scope.where(user: user)
+      end
+    end
+  end
+
   def index?
-    true
+    # @objectives = policy_scope(Objective)
+    @objectives = ObjectivePolicy::Scope.new(user, Objective).resolve
   end
 
   def show?

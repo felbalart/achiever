@@ -13,6 +13,7 @@ es-CL:
     attributes:
       objective:
         user_id: ID usuario
+        user: Usuario
         period_id: ID período
         period: Periodo
         text: Texto
