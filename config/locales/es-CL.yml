@@ -42,6 +42,7 @@ es-CL:
         updated_at: Fecha última actualización
         name: Nombre
         role: Rol
+        role_text: Rol
   enumerize:
     user:
       role:

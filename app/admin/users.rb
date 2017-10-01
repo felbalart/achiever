@@ -8,8 +8,8 @@ ActiveAdmin.register User do
     id_column
     column :email
     column :name
-    column :role
-    column :current_sign_in_at if current_user.role.sysadmin?
+    column :role_text
+    column :last_sign_in_at if current_user.role.sysadmin?
     column :sign_in_count  if current_user.role.sysadmin?
     actions
   end
