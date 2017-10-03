@@ -3,13 +3,7 @@ permit_params :text, :achieved, :user_id, :period_id,
   :obj1, :obj2, :obj3, :obj4, :obj5, :obj6
 
   actions :all, except: [:show]
-
-  filter :user, if: proc { current_user.role.sysadmin? }
-  filter :period
-  filter :text
-  filter :achieved
-  filter :created_at
-  filter :updated_at
+  before_action :check_skip_sidebar, only: :index
 
 
   scope 'Periodo Abierto', default: true do |objs|
@@ -38,17 +32,30 @@ permit_params :text, :achieved, :user_id, :period_id,
     column('Usuario') { |obj| obj.user.name } if current_user.role.sysadmin?
     column :period
     column('Estado Periodo') { |obj| obj.period.state_text }
-    column :text
-    column('Cumplido') do |obj|
-      ("<span class=achieved_#{obj.achieved}>" + {true => 'SI', false => 'NO', nil => 'N/D'}[obj.achieved] + '</span>').html_safe
+    column('Objetivo') { |obj| obj.text }
+    unless params[:scope] == 'periodo_abierto'
+      column('Cumplido') do |obj|
+        unless obj.period.state.open?
+          ("<span class=achieved_#{obj.achieved}>" + {true => 'SI', false => 'NO', nil => 'N/D'}[obj.achieved] + '</span>').html_safe
+        end
+      end
+      [false, true].each do |value|
+        column('Marcar') do |objective|
+          if objective.user == current_user && objective.period.state.evaluation?
+          link_to "#{value ? '' : 'No '}Cumplido",
+                  objective_path(id: objective, objective: { achieved: value }),
+                  method: :patch
+          end
+        end
+      end
     end
-    actions
+    actions unless params[:scope] == 'periodo_evaluacion'
   end
 
-  form do |f|
+  form title: proc { |obj| params[:action] == 'new' ? 'Ingresar Objetivos' : 'Editar Objetivo' } do |f|
     if Period.current.state.open? && resource.new_record?
       f.inputs do
-        6.times do |i|
+        5.times do |i|
           field = i.zero? ? :text : "obj#{i + 1}".to_sym
           f.input field, label: "Objetivo #{i + 1}"
         end
@@ -59,12 +66,12 @@ permit_params :text, :achieved, :user_id, :period_id,
         f.input :text
         f.actions
       end
-    elsif params[:action] == 'edit' && resource.period.state.evaluation?
-      f.inputs do
-        f.input :text, :input_html => { :disabled => true }
-        f.input :achieved
-        f.actions
-      end
+    # elsif params[:action] == 'edit' && resource.period.state.evaluation?
+    #   f.inputs do
+    #     f.input :text, :input_html => { :disabled => true }
+    #     f.input :achieved
+    #     f.actions
+    #   end
     end
   end
 
@@ -72,8 +79,8 @@ permit_params :text, :achieved, :user_id, :period_id,
     def create
       objs = params[:objective].values.reject(&:blank?)
       pre_existing = current_user.objectives.where(period: Period.current)
-      if !(objs.count + pre_existing.count).between?(3, 6)
-        msg = 'Debes ingresar entre 3 y 6 objetivos para este periodo'
+      if !(objs.count + pre_existing.count).between?(3, 5)
+        msg = 'Debes ingresar entre 3 y 5 objetivos para este periodo'
         msg += " (ya tenias #{pre_existing.count} previamente creados.  Ir a 'Editar' para modificarlos)" unless pre_existing.empty?
         flash[:error] = msg
       elsif params[:objective][:text].present?
@@ -84,6 +91,22 @@ permit_params :text, :achieved, :user_id, :period_id,
         end
       end
       super
+    end
+
+    def update
+      update! do |format|
+        format.html do
+          if resource.period.state.evaluation?
+            redirect_to objectives_path(scope: 'periodo_evaluacion')
+          elsif resource.period.state.open?
+            redirect_to objectives_path(scope: 'periodo_abierto')
+          end
+        end
+      end
+    end
+
+    def check_skip_sidebar
+      skip_sidebar! unless current_user.role.sysadmin?
     end
   end
 end

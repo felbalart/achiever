@@ -7,7 +7,6 @@ class Objective < ApplicationRecord
   attr_accessor :obj3
   attr_accessor :obj4
   attr_accessor :obj5
-  attr_accessor :obj6
 
   validates_presence_of :text
 

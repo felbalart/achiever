@@ -31,6 +31,10 @@ class ObjectivePolicy < ApplicationPolicy
   end
 
   def edit?
-    update?
+    record.period.state.open? && record.user == user
+  end
+
+  def destroy?
+    edit?
   end
 end
