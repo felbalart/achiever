@@ -4,8 +4,8 @@ ActiveAdmin.register_page "Dashboard" do
 
   content title: proc{ I18n.t("active_admin.dashboard") } do
     div class: "blank_slate_container", id: "dashboard_default_message" do
-      img src: image_path('banner-logos.png')
-      h1 "Bienvenido #{current_user.name.split(' ').first}!" if current_user.name
+      img src: image_path('logo.jpg'), width: 150
+      h1 "Bienvenid@ #{current_user.name.split(' ').first}!" if current_user.name
     end
 
     # Here is an example of a simple dashboard with columns and panels.
