@@ -109,4 +109,13 @@ permit_params :text, :achieved, :user_id, :period_id,
       skip_sidebar! unless current_user.role.sysadmin?
     end
   end
+
+  csv do
+    column :id
+    column('Usuario') { |obj| obj.user.name }
+    column('Periodo') { |obj| obj.period.name }
+    column('Cumplido') { |obj| obj.achieved }
+    column :created_at
+    column :updated_at
+  end
 end
