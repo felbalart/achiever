@@ -3,6 +3,7 @@ class Period < ApplicationRecord
   has_many :objectives
 
   validate :one_current
+  validates_presence_of :state
 
   def one_current
     currents = Period.where(current: true).to_a

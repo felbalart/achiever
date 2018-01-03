@@ -2,6 +2,6 @@ FactoryGirl.define do
   factory :period do
     name "MyString"
     current false
-    state false
+    state :closed
   end
 end
